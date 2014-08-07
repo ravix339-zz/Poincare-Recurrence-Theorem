@@ -45,14 +45,12 @@ main[listing_] :=
    		]
   	]
   	
-Manipulate[list = main[Table[1, {x}]];
- Dynamic[Null, i = 0, TrackedSymbols :> {x}];
- Dynamic[If[list !=   {"Too Many Iterations!"}, 
+Manipulate[list = main[Table[1, {x}]]; Dynamic[Null, i = 0, TrackedSymbols :> {x}];
+   Dynamic[If[list !=   {"Too Many Iterations!"}, 
    graphical[list[[2, i + 1]]], 
-   Rotate["program stopped calculating number of iterations because \
-it is above 100,000", 30 Degree]]],
- {list, ControlType -> None},
- {{x, 1, "number of elements"}, 1, 15, 1, ControlType -> PopupMenu}, 
- {{i, 0, "iteration number     "}, 0, list[[1]], 1, 
-  Appearance -> "Labeled"}
+   Rotate["program stopped calculating number of iterations because it is above 100,000", 30 Degree]]],
+    {list, ControlType -> None},
+    {{x, 1, "number of elements"}, 1, 15, 1, ControlType -> PopupMenu}, 
+    {{i, 0, "iteration number     "}, 0, list[[1]], 1, 
+    Appearance -> "Labeled"}
  ]
