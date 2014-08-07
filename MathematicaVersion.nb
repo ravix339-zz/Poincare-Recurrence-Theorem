@@ -1,0 +1,58 @@
+randomizer[lister_] := 
+ With[{q = 
+    RandomInteger[{1,Length[lister]}]},(*generates a random integer between 1 and length of the list*)
+  		ReplacePart[lister, q -> BitXor[lister[[q]], 1](*flips the bit (1 -> 0, 0 -> 1*)
+   ]]
+   
+graphical[lister_] := 
+  With[{length = Length[lister], total = Total[lister]},
+   	Graphics[ 
+            {
+     	Red,
+                 Rectangle[{-18, -6}, {18, 6}], (*Create first box*)
+                  RGBColor[238/255, 201/255, 0],
+                 Table[ (*Create Circles that are in box 1*)
+      				Disk[
+       					{x, RandomInteger[{-5, 5}]},
+       					.5],
+      				{x, -total, total - 1, 2}],
+     (*First Box Ends*)
+                  Blue ,
+                  Rectangle[  (*Create second box*)
+      				{-18, -8},
+      				{18, -20}],
+                  RGBColor[238/255, 201/255, 0],
+                  Table[
+                   	Disk[ (*Creates circles that are in box 2*)
+       					{x,
+        					RandomInteger[
+         						{-18, -10}]},
+       			        .5],
+      		         {x, -(length - total), (length - total) - 1, 2}
+      			 ] 
+     (*Second Box Ends*)
+           }, ImageSize -> 540]];
+           
+main[listing_] :=
+ Block[
+  	{
+   		     iterations, fullllist},
+  		fullllist = NestList[randomizer, listing, 100000];
+  		iterations = Position[fullllist, listing, 1];
+  		If[Length[iterations] > 1, {iterations[[2, 1]] - 1, 
+    fullllist[[1 ;; iterations[[2, 1]]]]},
+   		{"Too Many Iterations!"}
+   		]
+  	]
+  	
+Manipulate[list = main[Table[1, {x}]];
+ Dynamic[Null, i = 0, TrackedSymbols :> {x}];
+ Dynamic[If[list !=   {"Too Many Iterations!"}, 
+   graphical[list[[2, i + 1]]], 
+   Rotate["program stopped calculating number of iterations because \
+it is above 100,000", 30 Degree]]],
+ {list, ControlType -> None},
+ {{x, 1, "number of elements"}, 1, 15, 1, ControlType -> PopupMenu}, 
+ {{i, 0, "iteration number     "}, 0, list[[1]], 1, 
+  Appearance -> "Labeled"}
+ ]
