@@ -1,0 +1,16 @@
+
+randomizer[lister_] := 
+ With[{q = 
+    RandomInteger[{1, 
+      Length[lister]}]},(*generates a random integer between 1 and length of the list*)	
+  	ReplacePart[lister, q -> BitXor[lister[[q]], 1] (*flips the bit (1 -> 0, 0 -> 1*)
+   ]]
+main[listing_] :=
+ Block[
+  	{
+   		fullllist, firstlist},
+  		firstlist = randomizer2[listing];  (*changes list initiailly to prevent immediate ending of NestWhile*)
+  		fullllist = NestWhileList[randomizer2,firstlist, # != listing &]; (*Recurses using randomizer until the list is equal
+to the original list*)
+  		Print[{Length[fullllist]}]; (*displays the total amount of recursions*)
+  	]
